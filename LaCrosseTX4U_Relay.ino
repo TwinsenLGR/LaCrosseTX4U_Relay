@@ -10,7 +10,7 @@ unsigned int       lcHumy;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Started.");
+  Serial.println("Started LACrosseTX4Y_Relay.");
   pinMode(receicePin, INPUT);
   pinMode(sendPin, OUTPUT);
   pinMode(VccPin, OUTPUT);
@@ -165,8 +165,8 @@ void loop() {
       SendData(TData);
       delay(700);
       SendData(HData);
-      DebugData(TData);
-      DebugData(HData);
+      //DebugData(TData);
+      //DebugData(HData);
     }
       
     
@@ -192,7 +192,7 @@ void DebugS(String te,String t){
   Serial.print(millis());
   Serial.print("  ");
   Serial.print(te);
-  Serial.print("=");
+  Serial.print(" ");
   Serial.print(t);
 }
 
