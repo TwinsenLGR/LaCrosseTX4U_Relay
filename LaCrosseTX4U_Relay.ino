@@ -2,15 +2,15 @@
 byte               Data[11];
 byte               TData[11];
 byte               HData[11];
-unsigned char      receicePin=6;
-unsigned char      sendPin=8;
+unsigned char      receicePin=8;
+unsigned char      sendPin=6;
 unsigned char      VccPin=4;
 unsigned int       lcTemp;
 unsigned int       lcHumy;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Started LACrosseTX4Y_Relay.");
+  Serial.println("Started;LACrosseTX4Y_Relay.;;");
   pinMode(receicePin, INPUT);
   pinMode(sendPin, OUTPUT);
   pinMode(VccPin, OUTPUT);
@@ -84,7 +84,7 @@ String DecodeSenzor(byte *Data){
   byte add;
   String address;
   float Value=100;
-  String response;
+  String response="";
  
 
  if (Data[2]==0x00) {
@@ -108,7 +108,7 @@ if ((senzor =="Temperature" ) || (senzor =="Humidity")) {
  
  
  if (Value==100) response=senzor ;
- else response=senzor + " " + address +" " +Value;
+ else response=senzor + ";" + address +";" +Value;
   
  return response; 
   
@@ -158,13 +158,16 @@ void loop() {
       ArrayAddH();
     }
     
-    DebugS("",DecodeSenzor(Data));
+    //DebugS("",DecodeSenzor(Data));
     if (lcTemp!=0 && lcHumy!=0){
-      delay(1500);
+      delay(1000);
       lcTemp=lcHumy=0;
       SendData(TData);
       delay(700);
       SendData(HData);
+      DebugS("",DecodeSenzor(TData));
+      //delay(300);
+      DebugS("",DecodeSenzor(HData));
       //DebugData(TData);
       //DebugData(HData);
     }
@@ -188,38 +191,38 @@ void ArrayAddH(){
   }
 }
 void DebugS(String te,String t){
-  Serial.println("");
   Serial.print(millis());
-  Serial.print("  ");
+  Serial.print(";");
   Serial.print(te);
-  Serial.print(" ");
+  Serial.print("");
   Serial.print(t);
+  Serial.println("");
 }
 
 void DebugB(String te,byte t){
-  Serial.println("");
   Serial.print(millis());
   Serial.print("  ");
   Serial.print(te);
   Serial.print("=");
   Serial.print(t,DEC);
+  Serial.println("");
 }
 
 void DebugL(String te,long t){
-  Serial.println("");
   Serial.print(millis());
   Serial.print("  ");
   Serial.print(te);
   Serial.print("=");
   Serial.print(t);
+  Serial.println("");
 }
 
 void DebugData(byte *Data){
-  Serial.println("");
   Serial.print(millis());
   Serial.print("  ");
   for (int i = 0; i<= 10; i=i+1) {
     Serial.print(Data[i],DEC);
     Serial.print(" ");
   }
+  Serial.println("");
 }
