@@ -2,9 +2,9 @@
 byte               Data[11];
 byte               TData[11];
 byte               HData[11];
-unsigned char      receicePin=8;
-unsigned char      sendPin=6;
-unsigned char      VccPin=4;
+unsigned char      receicePin=4;
+unsigned char      sendPin=5;
+//unsigned char      VccPin=4;
 unsigned int       lcTemp;
 unsigned int       lcHumy;
 
@@ -13,8 +13,8 @@ void setup() {
   Serial.println("Started;LACrosseTX4Y_Relay.;;");
   pinMode(receicePin, INPUT);
   pinMode(sendPin, OUTPUT);
-  pinMode(VccPin, OUTPUT);
-  digitalWrite(VccPin, HIGH);
+  //pinMode(VccPin, OUTPUT);
+//  //digitalWrite(VccPin, HIGH);
 }
 
 void getData(byte *Data){
@@ -102,9 +102,10 @@ String DecodeSenzor(byte *Data){
   add=(Data[3]<< 4) + (Data[4]>>1);
   //DebugB("adresa=",add);
 
-if ((senzor =="Temperature" ) || (senzor =="Humidity")) {
-  if (add==0x83) address="External";
-}
+//if ((senzor =="Temperature" ) || (senzor =="Humidity")) {
+//  if (add==0x83) address="External";
+  address=String(add,HEX);
+//}
  
  
  if (Value==100) response=senzor ;
@@ -140,7 +141,6 @@ void  SendData(byte *d){
     }
     delay(30);
   }
-  delay(250);
 }
 
 
@@ -152,22 +152,24 @@ void loop() {
     if (Data[2]==0x00) {
       lcTemp=millis();
       ArrayAddT();
+      DebugS("",DecodeSenzor(TData));
     }
     else if (Data[2]==0x0E) {
       lcHumy=millis();
       ArrayAddH();
+      DebugS("",DecodeSenzor(HData));
     }
     
     //DebugS("",DecodeSenzor(Data));
     if (lcTemp!=0 && lcHumy!=0){
-      delay(1000);
+      delay(500);
       lcTemp=lcHumy=0;
       SendData(TData);
-      delay(700);
+      delay(250);
       SendData(HData);
-      DebugS("",DecodeSenzor(TData));
+      //DebugS("",DecodeSenzor(TData));
       //delay(300);
-      DebugS("",DecodeSenzor(HData));
+      //DebugS("",DecodeSenzor(HData));
       //DebugData(TData);
       //DebugData(HData);
     }
